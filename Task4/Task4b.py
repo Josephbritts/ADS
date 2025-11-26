@@ -17,9 +17,7 @@ import time
 import matplotlib.pyplot as plt
 
 
-# ---------------------------------------------------------------------
-# ------------------------------ TASK 4A -------------------------------
-# ---------------------------------------------------------------------
+#TASK 4A
 
 labels = ['A', 'B', 'C', 'D', 'E']
 index = {v: i for i, v in enumerate(labels)}
@@ -73,11 +71,9 @@ print("MST total weight (Prim):", total_p)
 print("Closable (non-MST) edges:", closable)
 
 
-# ---------------------------------------------------------------------
-# ------------------------------ TASK 4B -------------------------------
-# ---------------------------------------------------------------------
+#TASK 4B
 
-# === Helper: build a random weighted undirected graph ===============
+#Helper: build a random weighted undirected graph
 def generate_random_graph(n, edge_prob=0.15, max_w=20):
     """
     Generates a random weighted undirected graph using AdjacencyListGraph.
@@ -93,7 +89,7 @@ def generate_random_graph(n, edge_prob=0.15, max_w=20):
     return G
 
 
-# === Part 1: Empirical runtime measurements ==========================
+#Part 1: Empirical runtime measurements
 def measure_mst_runtime():
     sizes = list(range(100, 1001, 100))
     runtimes = []
@@ -110,7 +106,7 @@ def measure_mst_runtime():
         runtimes.append(avg)
         print(f"n={n}, avg MST time={avg:.6f}s")
 
-    # === Plot ===
+    #Plot
     plt.figure(figsize=(8, 5))
     plt.plot(sizes, runtimes, marker='o')
     plt.title("Task 4b — MST Runtime vs Number of Stations")
@@ -123,13 +119,27 @@ def measure_mst_runtime():
     return sizes, runtimes
 
 
-# === Part 2: Real London Underground backbone analysis ===============
+#Part 2: Real London Underground backbone analysis
 # Placeholder until you give me your data loader
 def example_placeholder_loader():
-    # TODO: replace with your real dataset loading function!
-    # Should return: list_of_stations, list_of_edges_as_(u, v, w)
-    return ["A", "B", "C"], [("A", "B", 5), ("B", "C", 2)]
-
+    # Larger test dataset with more edges and cycles
+    stations = ["A", "B", "C", "D", "E", "F", "G", "H"]
+    edges = [
+        ("A", "B", 4),
+        ("A", "C", 2),
+        ("B", "C", 1),
+        ("B", "D", 5),
+        ("C", "D", 8),
+        ("C", "E", 10),
+        ("D", "E", 2),
+        ("D", "F", 6),
+        ("E", "F", 3),
+        ("E", "G", 7),
+        ("F", "G", 1),
+        ("F", "H", 4),
+        ("G", "H", 2),
+    ]
+    return stations, edges
 
 def build_real_graph(stations, edges):
     index = {name: i for i, name in enumerate(stations)}
@@ -160,19 +170,19 @@ def extract_edge_list(graph, stations):
 def task4b_real_network():
     print("\n--- Task 4b: Real London Underground Backbone ---\n")
 
-    # === Load real data ===
+    #Load real data
     stations, edges = example_placeholder_loader()  # <<< replace later
     G, index_map = build_real_graph(stations, edges)
 
-    # === Compute MST ===
+    #Compute MST
     mst = kruskal(G)
     mst_total = get_total_weight(mst)
 
-    # === List MST edges ===
+    # List MST edges
     mst_edges = extract_edge_list(mst, stations)
     mst_set = {(min(a, b), max(a, b)) for (a, b, _) in mst_edges}
 
-    # === Redundant (closable) edges ===
+    #Redundant (closable) edges
     redundant = []
     for (u, v, w) in edges:
         a, b = min(u, v), max(u, v)
@@ -186,12 +196,11 @@ def task4b_real_network():
     for r in redundant[:10]:
         print("  ", r)
 
-    print("\n(For your report: take a screenshot of this output.)")
 
     return mst, mst_edges, redundant
 
 
-# === Entry point for running Task 4b section =========================
+# Entry point for running Task 4b section
 if __name__ == "__main__":
     # 1) Experimental runtime graph
     measure_mst_runtime()

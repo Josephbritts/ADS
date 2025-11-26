@@ -8,6 +8,8 @@ CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
 ONE_UP_FILE = os.path.dirname(CURRENT_DIR)
 PROJECT_ROOT = os.path.dirname(ONE_UP_FILE)
 CLRS_ROOT = os.path.join(PROJECT_ROOT, "clrsPython")
+OUTPUT_DIR = os.path.join(PROJECT_ROOT, "Task1", "Task1B")
+os.makedirs(OUTPUT_DIR, exist_ok=True)
 
 sys.path.insert(0, os.path.join(CLRS_ROOT, "Chapter 11"))
 sys.path.insert(0, os.path.join(CLRS_ROOT, "Chapter 31"))
@@ -146,7 +148,7 @@ sizes = [n for (n, t) in results]
 times = [t * 1e6 for (n, t) in results]
 
 # Save results to CSV file
-output_file = "hash_table_results.csv"
+output_file = os.path.join(OUTPUT_DIR, "hash_table_results.csv")
 with open(output_file, 'w') as f:
     f.write("Dataset_Size,Average_Time_Microseconds\n")
     for n, avg_time in results:
@@ -182,7 +184,7 @@ plt.legend(fontsize=10)
 plt.tight_layout()
 
 # Save plot
-plot_filename = "hash_table_performance.png"
+plot_filename = os.path.join(OUTPUT_DIR, "hash_table_performance.png")
 plt.savefig(plot_filename, dpi=300, bbox_inches='tight')
 
 
